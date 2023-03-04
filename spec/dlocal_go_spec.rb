@@ -8,14 +8,14 @@ RSpec.describe DlocalGo do
   context "setup" do
     it "responds to setup and corresponding configurations" do
       expect(DlocalGo).to respond_to(:setup)
-      expect(DlocalGo).to respond_to(:api_key, :api_key=, :api_secret, :api_secret=,:environment, :environment=,
+      expect(DlocalGo).to respond_to(:api_key, :api_key=, :api_secret, :api_secret=, :environment, :environment=,
                                      :supported_countries, :supported_countries=)
     end
 
     it "assigns the attributes correctly after setup" do
-      api_key = 'api_key_sample'
-      api_secret = 'api_secret_sample'
-      environment = 'production'
+      api_key = "api_key_sample"
+      api_secret = "api_secret_sample"
+      environment = "production"
       supported_countries = %w[UY AR]
 
       DlocalGo.setup do |config|

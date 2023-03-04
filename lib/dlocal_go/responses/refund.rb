@@ -5,7 +5,7 @@ module DlocalGo
     class Refund
       RESPONSE_ATTRIBUTES = %i[id amount status].freeze
 
-      attr_reader *RESPONSE_ATTRIBUTES
+      attr_reader(*RESPONSE_ATTRIBUTES)
 
       def initialize(response)
         RESPONSE_ATTRIBUTES.each do |attribute|

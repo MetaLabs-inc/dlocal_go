@@ -6,7 +6,7 @@ module DlocalGo
       RESPONSE_ATTRIBUTES = %i[id amount currency country created_date status order_id success_url back_url
                                redirect_url merchant_checkout_token direct].freeze
 
-      attr_reader *RESPONSE_ATTRIBUTES
+      attr_reader(*RESPONSE_ATTRIBUTES)
 
       def initialize(response)
         RESPONSE_ATTRIBUTES.each do |attribute|
