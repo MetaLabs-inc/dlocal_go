@@ -4,6 +4,7 @@ require_relative "responses/payment"
 require_relative "responses/refund"
 
 module DlocalGo
+  # Client for Dlocal Go API
   class Client
     SANDBOX_URL = "https://api-sbx.dlocalgo.com"
     PRODUCTION_URL = "https://api.dlocalgo.com"

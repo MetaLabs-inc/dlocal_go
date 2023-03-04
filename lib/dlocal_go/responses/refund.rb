@@ -2,6 +2,7 @@
 
 module DlocalGo
   module Responses
+    # Class that represents Dlocal Go refund schema
     class Refund
       RESPONSE_ATTRIBUTES = %i[id amount status].freeze
 

@@ -2,6 +2,7 @@
 
 module DlocalGo
   module Responses
+    # Class that represents Dlocal Go payment schema
     class Payment
       RESPONSE_ATTRIBUTES = %i[id amount currency country created_date status order_id success_url back_url
                                redirect_url merchant_checkout_token direct].freeze

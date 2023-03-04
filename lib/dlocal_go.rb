@@ -4,6 +4,7 @@ require_relative "dlocal_go/version"
 require_relative "dlocal_go/errors"
 require_relative "dlocal_go/client"
 
+# Main module for Dlocal Go, it provides a way to configure the gem and imports the client
 module DlocalGo
   def self.setup
     yield self
@@ -16,36 +17,8 @@ module DlocalGo
     self.supported_countries = nil
   end
 
-  def self.api_key
-    @@api_key
-  end
-
-  def self.api_key=(api_key)
-    @@api_key = api_key
-  end
-
-  def self.api_secret
-    @@api_secret
-  end
-
-  def self.api_secret=(api_secret)
-    @@api_secret = api_secret
-  end
-
-  def self.environment
-    @@environment
-  end
-
-  def self.environment=(environment)
-    @@environment = environment
-  end
-
-  def self.supported_countries
-    @@supported_countries
-  end
-
-  def self.supported_countries=(supported_countries)
-    @@supported_countries = supported_countries
+  class << self
+    attr_accessor :api_key, :api_secret, :environment, :supported_countries
   end
 
   self.api_key = nil
