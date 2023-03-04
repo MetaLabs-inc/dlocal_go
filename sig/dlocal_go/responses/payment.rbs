@@ -1,0 +1,7 @@
+module DlocalGo
+  module Responses
+    class Payment
+      RESPONSE_ATTRIBUTES: untyped
+    end
+  end
+end

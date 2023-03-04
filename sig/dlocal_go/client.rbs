@@ -1,0 +1,10 @@
+module DlocalGo
+  class Client
+    CURRENCY_FOR_COUNTRY: untyped
+    DEFAULT_SUPPORTED_COUNTRIES: untyped
+    SANDBOX_URL: String
+    PRODUCTION_URL: String
+
+    def create_payment: -> untyped
+  end
+end

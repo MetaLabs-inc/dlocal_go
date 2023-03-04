@@ -1,0 +1,7 @@
+module DlocalGo
+  module Responses
+    class Refund
+      RESPONSE_ATTRIBUTES: untyped
+    end
+  end
+end
