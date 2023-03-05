@@ -1,10 +1,26 @@
 module DlocalGo
   class Client
-    CURRENCY_FOR_COUNTRY: untyped
-    DEFAULT_SUPPORTED_COUNTRIES: untyped
+    CURRENCY_FOR_COUNTRY: Hash[Symbol, String]
+    DEFAULT_SUPPORTED_COUNTRIES: Array[String]
     SANDBOX_URL: String
     PRODUCTION_URL: String
 
-    def create_payment: -> untyped
+    @api_key: String
+    @api_secret: String
+    @base_url: String
+
+    def create_payment: -> Responses::Payment
+    def get_payment: -> Responses::Payment
+    def create_refund: -> Responses::Refund
+
+    private
+
+    def auth_header: -> untyped
+
+    def endpoint_url: -> untyped
+
+    def json_content_type: -> untyped
+
+    def supported_countries: -> untyped
   end
 end

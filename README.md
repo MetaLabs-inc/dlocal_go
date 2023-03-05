@@ -1,14 +1,13 @@
 # DlocalGo
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/dlocal_go`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Ruby client for the [dLocal Go](https://dlocalgo.com/) API.
 
 ## Installation
 
-Install the gem and add to the application's Gemfile by executing:
+Add dlocal_go in your Gemfile
 
-    $ bundle add dlocal_go
+    $ gem 'dlocal_go'
+    $ bundle install
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
@@ -16,17 +15,57 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-TODO: Write usage instructions here
+1. Configure DlocalGo in a initializer
 
-## Development
+```ruby
+  DlocalGo.setup do |config|
+    config.api_key = 'your_api_key'
+    config.api_secret = 'your_api_secret'
+    config.environment = 'sandbox' # or 'production'
+    config.supported_countries = %w[AR BR CL CO MX PE UY] # Optional, default:  %w[UY AR CL BO BR CO CR EC GT ID MX MY PE PY]
+  end
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+2. Use the client to create a payment, get a payment, or create a refund.
+
+- Create Payment
+
+```ruby
+  params = {
+    country_code: "UY",
+    currency: "USD", # Optional, if not supplied, it uses the default currency for the country
+    amount: 100,
+    success_url: "https://success.url", # Where the user will be redirected after the payment is approved
+    back_url: "https://back.url", # Where the user is redirected if they go back from the checkout page
+    notification_url: "https://notification.url" # Optional, where the notification will be sent when payment state changes, (It will send a POST request with a payment_id param in the body, which can be used to retrieve the payment)
+  }
+  response = DlocalGo::Client.create_payment(params)
+  # If request is not successful, it will raise a DlocalGo::Error, otherwise the response will be a DlocalGo::Response::Payment object
+```
+
+- Get Payment
+
+```ruby
+  response = DlocalGo::Client.get_payment("payment_id")
+  # If request is not successful, it will raise a DlocalGo::Error, otherwise the response will be a DlocalGo::Response::Payment object
+```
+
+- Create Refund
+
+```ruby
+  params = {
+    payment_id: "payment_id_sample",
+    amount: 100,
+    reason: "reason_sample"
+  }
+  response = DlocalGo::Client.create_refund(params)
+  # If request is not successful, it will raise a DlocalGo::Error, otherwise the response will be a DlocalGo::Response::Refund object
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/dlocal_go.
+Bug reports and pull requests are welcome on GitHub at https://github.com/MetaLabs-inc/dlocal_go.
 
 ## License
 
