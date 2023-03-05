@@ -78,3 +78,9 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/MetaLa
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## Authors
+
+Made with ❤️ by MetaLabs' Team
+
+<img width="240" alt="Screenshot 2023-03-04 at 23 10 21" src="https://user-images.githubusercontent.com/57004457/222937877-f6d26748-ff85-4907-905b-d9a4b1469daf.png">
