@@ -13,6 +13,11 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
     $ gem install dlocal_go
 
+## Preview
+
+https://user-images.githubusercontent.com/57004457/222937723-c95ca31c-2871-4f0f-a61e-fd4c9738e75f.mp4
+
+
 ## Usage
 
 1. Configure DlocalGo in a initializer
@@ -42,6 +47,9 @@ If bundler is not being used to manage dependencies, install the gem by executin
   }
   response = DlocalGo::Client.create_payment(params)
   # If request is not successful, it will raise a DlocalGo::Error, otherwise the response will be a DlocalGo::Response::Payment object
+
+  # You might want to save the payment from the response before redirecting, so you can update the state later via a webhook (notification_url)
+  redirect_to response.redirect_url, allow_other_host: true
 ```
 
 - Get Payment
