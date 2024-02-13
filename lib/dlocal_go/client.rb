@@ -2,78 +2,49 @@
 
 require_relative "responses/payment"
 require_relative "responses/refund"
+require_relative "responses/recurring_payment"
+require_relative "responses/subscription_plan"
+require_relative "responses/subscription"
+require_relative "responses/subscription_execution"
+
+require_relative "generators/endpoints"
 
 module DlocalGo
   # Client for Dlocal Go API
   class Client
-    SANDBOX_URL = "https://api-sbx.dlocalgo.com"
-    PRODUCTION_URL = "https://api.dlocalgo.com"
-    DEFAULT_SUPPORTED_COUNTRIES = %w[UY AR CL BO BR CO CR EC GT ID MX MY PE PY].freeze
-    CURRENCY_FOR_COUNTRY = { UY: "UYU", AR: "ARS", CL: "CLP", BO: "BOB", BR: "BRL",
-                             CO: "COP", CR: "CRC", EC: "USD", GT: "GTQ", ID: "IDR", MX: "MXN",
-                             MY: "MYR", PE: "PEN", PY: "PYG" }.freeze
+    include DlocalGo::Generators::Endpoints
 
     def initialize
-      @api_key = DlocalGo.api_key
-      @api_secret = DlocalGo.api_secret
-      @base_url = DlocalGo.environment == "production" ? PRODUCTION_URL : SANDBOX_URL
-
-      raise DlocalGo::Error, "Dlocal Go api key is not set" if @api_key.nil?
-      raise DlocalGo::Error, "Dlocal Go api secret is not set" if @api_secret.nil?
+      raise DlocalGo::Error, "Dlocal Go api key is not set" if api_key.nil?
+      raise DlocalGo::Error, "Dlocal Go api secret is not set" if api_secret.nil?
     end
 
-    def create_payment(params = {})
-      raise DlocalGo::Error, "Unsupported country" unless supported_countries.include?(params[:country_code])
+    # For body params requirements, visit: https://docs.dlocalgo.com/integration-api/welcome-to-dlocal-go-api/
 
-      uri = "/v1/payments"
-      body = { amount: params[:amount], country: params[:country_code], notification_url: params[:notification_url],
-               currency: params[:currency] || CURRENCY_FOR_COUNTRY[params[:country_code].to_sym],
-               success_url: params[:success_url], back_url: params[:back_url] }
+    # For get and delete requests, send the path variables as a hash, for example: client.get_payment(payment_id: "123") and it will get replaced automatically inside the uri
+    # For post and put/patch requests, the hash param will be included in the body instead
 
-      response = HTTP.auth(auth_header).headers(json_content_type).post(endpoint_url(uri), json: body)
+    # PAYMENTS
+    generate_endpoint :create_payment, uri: "/v1/payments", verb: :post, dto: DlocalGo::Responses::Payment
+    generate_endpoint :get_payment, uri: "/v1/payments/:payment_id", verb: :get, dto: DlocalGo::Responses::Payment
+    generate_endpoint :create_refund, uri: "/v1/refunds", verb: :post, dto: DlocalGo::Responses::Refund
+    generate_endpoint :get_refund, uri: "/v1/refunds/:refund_id", verb: :get, dto: DlocalGo::Responses::Refund
 
-      raise DlocalGo::Error, "Error creating checkout #{response.parse}" unless response.status.success?
+    # RECURRING PAYMENTS
+    generate_endpoint :create_recurring_payment, uri: "/v1/recurring-payments", verb: :post, dto: DlocalGo::Responses::RecurringPayment
+    generate_endpoint :get_recurring_payment, uri: "/v1/recurring-payments/:recurring_link_token", verb: :get, dto: DlocalGo::Responses::RecurringPayment
+    generate_endpoint :get_all_recurring_payments, uri: "/v1/recurring-payments", verb: :get, dto: DlocalGo::Responses::RecurringPayment, array: true
 
-      DlocalGo::Responses::Payment.new(OpenStruct.new(response.parse))
-    end
+    # SUBSCRIPTIONS
+    generate_endpoint :create_subscription_plan, uri: "/v1/subscription/plan", verb: :post, dto: DlocalGo::Responses::SubscriptionPlan
+    generate_endpoint :update_subscription_plan, uri: "/v1/subscription/plan", verb: :patch, dto: DlocalGo::Responses::SubscriptionPlan
+    generate_endpoint :get_all_subscription_plans, uri: "/v1/subscription/plan/all", verb: :get, dto: DlocalGo::Responses::SubscriptionPlan, array: true
+    generate_endpoint :get_subscription_plan, uri: "/v1/subscription/plan/:plan_id", verb: :get, dto: DlocalGo::Responses::SubscriptionPlan
 
-    def get_payment(payment_id)
-      uri = "/v1/payments/#{payment_id}"
-      response = HTTP.auth(auth_header).get(endpoint_url(uri))
+    generate_endpoint :get_subscriptions_by_plan, uri: "/v1/subscription/plan/:plan_id/subscription/all", verb: :get, dto: DlocalGo::Responses::Subscription, array: true
+    generate_endpoint :get_all_executions_by_subscription, uri: "/v1/subscription/plan/:plan_id/subscription/:subscription_id/execution/all", verb: :get, dto: DlocalGo::Responses::SubscriptionExecution, array: true
 
-      raise DlocalGo::Error, "Error getting payment: #{response.parse}" unless response.status.success?
-
-      DlocalGo::Responses::Payment.new(OpenStruct.new(response.parse))
-    end
-
-    def create_refund(params = {})
-      uri = "/v1/refunds"
-      body = { payment_id: params[:payment_id], currency: params[:currency], amount: params[:amount],
-               notification_url: params[:notification_url] }
-
-      response = HTTP.auth(auth_header).headers(json_content_type).post(endpoint_url(uri), json: body)
-
-      raise DlocalGo::Error, "Error creating refund: #{response.parse}" unless response.status.success?
-
-      DlocalGo::Responses::Refund.new(OpenStruct.new(response.parse))
-    end
-
-    private
-
-    def auth_header
-      "Bearer #{@api_key}:#{@api_secret}"
-    end
-
-    def json_content_type
-      { 'content-type': "application/json" }
-    end
-
-    def endpoint_url(endpoint_url)
-      "#{@base_url}#{endpoint_url}"
-    end
-
-    def supported_countries
-      DlocalGo.supported_countries || DEFAULT_SUPPORTED_COUNTRIES
-    end
+    generate_endpoint :cancel_plan, uri: "/v1/subscription/plan/:plan_id/deactivate", verb: :patch, dto: DlocalGo::Responses::SubscriptionPlan
+    generate_endpoint :cancel_subscription, uri: "/v1/subscription/plan/:plan_id/subscription/:subscription_id/deactivate", verb: :patch, dto: DlocalGo::Responses::Subscription
   end
 end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "active_support/all"
+
 require_relative "dlocal_go/version"
 require_relative "dlocal_go/errors"
 require_relative "dlocal_go/client"
