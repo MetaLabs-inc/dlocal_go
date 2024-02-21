@@ -2,10 +2,9 @@
 
 module DlocalGo
   module Responses
-    # Class that represents Dlocal Go payment schema
-    class Payment
-      RESPONSE_ATTRIBUTES = %i[id amount currency country created_date status order_id success_url back_url
-                               redirect_url merchant_checkout_token direct].freeze
+    # Class that represents Dlocal Go recurring payment schema
+    class RecurringPayment
+      RESPONSE_ATTRIBUTES = %i[currency amount recurring_link_token enabled].freeze
 
       attr_reader(*RESPONSE_ATTRIBUTES)
 

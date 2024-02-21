@@ -10,7 +10,7 @@ module DlocalGo
 
       def initialize(response)
         RESPONSE_ATTRIBUTES.each do |attribute|
-          instance_variable_set("@#{attribute}", response.send(attribute))
+          instance_variable_set("@#{attribute}", response.send(attribute) || response.send(attribute.to_s.camelize(:lower)))
         end
       end
     end
