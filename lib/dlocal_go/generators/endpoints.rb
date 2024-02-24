@@ -15,8 +15,9 @@ module DlocalGo
       end
 
       module ClassMethods
-        def subscription_base_url
-          DlocalGo.environment == "production" ? DlocalGo::Generators::Endpoints::SUBSCRIPTION_BASE_PRODUCTION_URL : DlocalGo::Generators::Endpoints::SUBSCRIPTION_BASE_SANDBOX_URL
+        def subscription_base_url(token:, email: nil)
+          base_url = DlocalGo.environment == "production" ? DlocalGo::Generators::Endpoints::SUBSCRIPTION_BASE_PRODUCTION_URL : DlocalGo::Generators::Endpoints::SUBSCRIPTION_BASE_SANDBOX_URL
+          email.present? ? "#{base_url}#{token}?email=#{email}" : "#{base_url}#{token}"
         end
 
         def generate_endpoint(method, uri:, verb:, dto:, array: false)
