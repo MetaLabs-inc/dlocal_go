@@ -15,6 +15,10 @@ module DlocalGo
       end
 
       module ClassMethods
+        def subscription_base_url
+          DlocalGo.environment == "production" ? DlocalGo::Generators::Endpoints::SUBSCRIPTION_BASE_PRODUCTION_URL : DlocalGo::Generators::Endpoints::SUBSCRIPTION_BASE_SANDBOX_URL
+        end
+
         def generate_endpoint(method, uri:, verb:, dto:, array: false)
           define_method(method) do |params = {}|
             raise DlocalGo::Error, "Unsupported country" if params[:country] && !supported_countries.include?(params[:country])
