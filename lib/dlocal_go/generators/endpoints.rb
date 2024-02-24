@@ -1,5 +1,4 @@
 require "http"
-require "debug"
 
 require_relative "constants"
 
