@@ -52,7 +52,7 @@ module DlocalGo
 
     generate_endpoint :get_subscriptions_by_plan, uri: "/v1/subscription/plan/:plan_id/subscription/all", verb: :get, dto: DlocalGo::Responses::Subscription, array: true
     generate_endpoint :get_all_executions_by_subscription, uri: "/v1/subscription/plan/:plan_id/subscription/:subscription_id/execution/all", verb: :get, dto: DlocalGo::Responses::SubscriptionExecution, array: true
-    generate_endpoint :get_subscription_execution, uri: "v1/subscription/:subscription_id/execution/:order_id", verb: :get, dto: DlocalGo::Responses::SubscriptionExecution
+    generate_endpoint :get_subscription_execution, uri: "/v1/subscription/:subscription_id/execution/:order_id", verb: :get, dto: DlocalGo::Responses::SubscriptionExecution
 
     generate_endpoint :cancel_plan, uri: "/v1/subscription/plan/:plan_id/deactivate", verb: :patch, dto: DlocalGo::Responses::SubscriptionPlan
     generate_endpoint :cancel_subscription, uri: "/v1/subscription/plan/:plan_id/subscription/:subscription_id/deactivate", verb: :patch, dto: DlocalGo::Responses::Subscription
