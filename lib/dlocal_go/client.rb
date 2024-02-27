@@ -21,8 +21,17 @@ module DlocalGo
 
     # For body params requirements, visit: https://docs.dlocalgo.com/integration-api/welcome-to-dlocal-go-api/
 
+    # ===== USAGE =====
+    #
+
     # For get and delete requests, send the path variables as a hash, for example: client.get_payment(payment_id: "123") and it will get replaced automatically inside the uri
-    # For post and put/patch requests, the hash param will be included in the body instead
+    # Also for get and delete requests, query params are taken from the query_params hash key, for example: client.get_all_subscription_plans(query_params: { page: 2 })
+    # This is an example that uses query and path params: client.get_all_executions_by_subscription(subscription_id: "123", plan_id: "456", query_params: { page: 2 })
+
+    # For post and put/patch requests, the hash variables will be included in the body instead
+
+    #
+    # ===== USAGE =====
 
     # PAYMENTS
     generate_endpoint :create_payment, uri: "/v1/payments", verb: :post, dto: DlocalGo::Responses::Payment
@@ -43,6 +52,7 @@ module DlocalGo
 
     generate_endpoint :get_subscriptions_by_plan, uri: "/v1/subscription/plan/:plan_id/subscription/all", verb: :get, dto: DlocalGo::Responses::Subscription, array: true
     generate_endpoint :get_all_executions_by_subscription, uri: "/v1/subscription/plan/:plan_id/subscription/:subscription_id/execution/all", verb: :get, dto: DlocalGo::Responses::SubscriptionExecution, array: true
+    generate_endpoint :get_subscription_execution, uri: "v1/subscription/:subscription_id/execution/:order_id", verb: :get, dto: DlocalGo::Responses::SubscriptionExecution
 
     generate_endpoint :cancel_plan, uri: "/v1/subscription/plan/:plan_id/deactivate", verb: :patch, dto: DlocalGo::Responses::SubscriptionPlan
     generate_endpoint :cancel_subscription, uri: "/v1/subscription/plan/:plan_id/subscription/:subscription_id/deactivate", verb: :patch, dto: DlocalGo::Responses::Subscription
