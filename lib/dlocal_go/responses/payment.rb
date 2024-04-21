@@ -17,6 +17,8 @@ module DlocalGo
         redirect_url
         notification_url
         merchant_checkout_token
+        approved_date
+        description
         direct
       ]
     end
