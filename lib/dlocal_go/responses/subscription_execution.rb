@@ -1,25 +1,25 @@
-# frozen_string_literal: true
-
+require_relative "base"
 require_relative "subscription"
 
 module DlocalGo
   module Responses
     # Class that represents Dlocal Go subscription plan execution schema
-    class SubscriptionExecution
-      RESPONSE_ATTRIBUTES = %i[
-        id subscription status order_id merchant_checkout_id currency amount_paid amount_received checkout_currency
-        balance_currency created_at updated_at
-      ].freeze
+    class SubscriptionExecution < DlocalGo::Responses::Base
+      has_attributes %i[
+        id
+        status
+        order_id
+        merchant_checkout_id
+        currency
+        amount_paid
+        amount_received
+        checkout_currency
+        balance_currency
+        created_at
+        updated_at
+      ]
 
-      attr_reader(*RESPONSE_ATTRIBUTES)
-
-      def initialize(response)
-        (RESPONSE_ATTRIBUTES - %i[subscription]).each do |attribute|
-          instance_variable_set("@#{attribute}", response.send(attribute))
-        end
-
-        @subscription = Subscription.new(OpenStruct.new(response["subscription"]))
-      end
+      has_association :subscription, DlocalGo::Responses::Subscription
     end
   end
 end

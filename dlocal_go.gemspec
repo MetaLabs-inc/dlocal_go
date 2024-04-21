@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require_relative "lib/dlocal_go/version"
 
 Gem::Specification.new do |spec|

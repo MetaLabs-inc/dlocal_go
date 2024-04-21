@@ -1,10 +1,9 @@
-# frozen_string_literal: true
-
 require "active_support/all"
 
 require_relative "dlocal_go/version"
 require_relative "dlocal_go/errors"
 require_relative "dlocal_go/client"
+require_relative "dlocal_go/utilities"
 
 # Main module for Dlocal Go, it provides a way to configure the gem and imports the client
 module DlocalGo
