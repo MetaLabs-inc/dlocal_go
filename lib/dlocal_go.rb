@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "active_support/all"
 
 require_relative "dlocal_go/version"

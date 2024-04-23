@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe DlocalGo do
   it "has a version number" do
     expect(DlocalGo::VERSION).not_to be nil

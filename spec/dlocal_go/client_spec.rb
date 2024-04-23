@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe DlocalGo::Client do
   subject(:client) { DlocalGo::Client.new }
 
@@ -37,14 +39,13 @@ RSpec.describe DlocalGo::Client do
     end
 
     let(:methods) do
-      [
-        :create_payment, :get_payment, :create_refund, :get_refund,
-        :create_recurring_payment, :get_recurring_payment, :get_all_recurring_payments,
-        :create_subscription_plan, :update_subscription_plan, :get_all_subscription_plans, :get_subscription_plan,
-        :get_subscriptions_by_plan, :get_all_executions_by_subscription, :get_subscription_execution,
-        :cancel_plan, :cancel_subscription
+      %i[
+        create_payment get_payment create_refund get_refund
+        create_recurring_payment get_recurring_payment get_all_recurring_payments
+        create_subscription_plan update_subscription_plan get_all_subscription_plans get_subscription_plan
+        get_subscriptions_by_plan get_all_executions_by_subscription get_subscription_execution
+        cancel_plan cancel_subscription
       ]
-
     end
 
     it "defines the expected endpoints" do

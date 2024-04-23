@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "http"
 
 require_relative "constants"
@@ -14,7 +16,10 @@ module DlocalGo
     module ClassMethods
       def endpoint(method, uri:, verb:, dto_class:)
         define_method(method) do |params = {}|
-          raise DlocalGo::Error.new("Unsupported country") if params[:country].present? && supported_countries.exclude?(params[:country])
+          if params[:country].present? && supported_countries.exclude?(params[:country])
+            raise DlocalGo::Error,
+                  "Unsupported country"
+          end
 
           response = call_api(verb, uri, params)
           parse_response(response, dto_class)
@@ -56,14 +61,17 @@ module DlocalGo
 
     def parse_response(response, dto_class)
       response_body = response.parse
-      raise DlocalGo::Error.new(response_body["message"], error_code: response_body["code"]) unless response.status.success?
+      unless response.status.success?
+        raise DlocalGo::Error.new(response_body["message"],
+                                  error_code: response_body["code"])
+      end
 
       parse_successful_response(response_body, dto_class)
     end
 
     def parse_successful_response(response_body, dto_class)
       struct = OpenStruct.new(response_body)
-      array_response = response_body.dig("data").is_a?(Array)
+      array_response = response_body["data"].is_a?(Array)
 
       array_response ? DlocalGo::Responses::Array.new(struct, { data_class: dto_class }) : dto_class.new(struct)
     end

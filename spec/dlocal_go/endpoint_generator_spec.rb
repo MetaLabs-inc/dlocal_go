@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class TestClient
   include DlocalGo::EndpointGenerator
 
   class TestDTO < DlocalGo::Responses::Base
-    has_attributes [:first_attribute, :second_attribute]
+    has_attributes %i[first_attribute second_attribute]
   end
 
-  endpoint :new_endpoint, uri: '/v1/new_endpoint', verb: :get, dto_class: TestDTO
-  endpoint :another_endpoint, uri: '/v1/another_endpoint/:my_id', verb: :get, dto_class: TestDTO
+  endpoint :new_endpoint, uri: "/v1/new_endpoint", verb: :get, dto_class: TestDTO
+  endpoint :another_endpoint, uri: "/v1/another_endpoint/:my_id", verb: :get, dto_class: TestDTO
 end
 
 RSpec.describe DlocalGo::EndpointGenerator do

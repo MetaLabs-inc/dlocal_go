@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DlocalGo
   module Responses
     module ResponseParser
@@ -37,17 +39,18 @@ module DlocalGo
 
       def extract_options(options)
         if options[:data_class]
-          raise ArgumentError, "array_data_attribute is required" unless self.array_data_attribute
+          raise ArgumentError, "array_data_attribute is required" unless array_data_attribute
 
-          class_eval { has_association(self.array_data_attribute, options[:data_class]) }
+          class_eval { has_association(array_data_attribute, options[:data_class]) }
         end
       end
 
       def assign_attributes(response)
-        return if self.response_attributes.nil?
+        return if response_attributes.nil?
 
-        self.response_attributes.each do |attribute|
-          instance_variable_set("@#{attribute}", response.send(attribute) || response.send(attribute.to_s.camelize(:lower)))
+        response_attributes.each do |attribute|
+          instance_variable_set("@#{attribute}",
+                                response.send(attribute) || response.send(attribute.to_s.camelize(:lower)))
         end
       end
 
@@ -57,7 +60,7 @@ module DlocalGo
         self.response_associations.each do |attribute, klass|
           response_data = response.send(attribute) || response.send(attribute.to_s.camelize(:lower))
 
-          if response_data.class.name == "Array"
+          if response_data.instance_of?(::Array)
             mapped_data = response_data.map do |data|
               struct = OpenStruct.new(data)
               klass.new(struct)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "dlocal_go"
 require "webmock/rspec"
 require "debug"

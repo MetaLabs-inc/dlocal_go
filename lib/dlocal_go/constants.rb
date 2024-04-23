@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DlocalGo
   module Constants
     SANDBOX_URL = "https://api-sbx.dlocalgo.com"
