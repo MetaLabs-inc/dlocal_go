@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module DlocalGo
+  # Constants we'll use throughout the gem
   module Constants
     SANDBOX_URL = "https://api-sbx.dlocalgo.com"
     PRODUCTION_URL = "https://api.dlocalgo.com"

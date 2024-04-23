@@ -2,12 +2,17 @@
 
 module DlocalGo
   module Responses
+    # Module that makes it easier for DTOs to define their schema
     module ResponseParser
       def self.included(base)
         base.class_eval { class_attribute :response_attributes, :response_associations, :array_data_attribute }
 
         base.extend(ClassMethods)
+        base.include(Initializable)
+      end
 
+      # Override the initialize method to assign the attributes and associations
+      module Initializable
         def initialize(response, options = {})
           extract_options(options)
 
@@ -16,7 +21,9 @@ module DlocalGo
         end
       end
 
+      # "Define the DSL" for all the DTOs
       module ClassMethods
+        # rubocop:disable Naming/PredicateName
         def has_attributes(attributes)
           self.response_attributes = attributes
 
@@ -33,16 +40,15 @@ module DlocalGo
         def has_array_data_attribute(attribute)
           self.array_data_attribute = attribute
         end
+        # rubocop:enable Naming/PredicateName
       end
 
       private
 
       def extract_options(options)
-        if options[:data_class]
-          raise ArgumentError, "array_data_attribute is required" unless array_data_attribute
+        raise ArgumentError, "array_data_attribute is required" if options[:data_class].present? && array_data_attribute.blank?
 
-          class_eval { has_association(array_data_attribute, options[:data_class]) }
-        end
+        class_eval { has_association(array_data_attribute, options[:data_class]) }
       end
 
       def assign_attributes(response)

@@ -6,6 +6,7 @@ require_relative "constants"
 require_relative "responses/array"
 
 module DlocalGo
+  # Module that allows us to define endpoints in the DlocalGo::Client class just by calling the endpoint method
   module EndpointGenerator
     include Constants
 
@@ -13,6 +14,7 @@ module DlocalGo
       base.extend(ClassMethods)
     end
 
+    # "Define the DSL"
     module ClassMethods
       def endpoint(method, uri:, verb:, dto_class:)
         define_method(method) do |params = {}|

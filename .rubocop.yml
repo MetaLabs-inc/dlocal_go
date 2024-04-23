@@ -10,7 +10,10 @@ Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes
 
 Layout/LineLength:
-  Max: 120
+  Max: 200
+
+Metrics/MethodLength:
+  Max: 15
 
 Metrics/BlockLength:
   Enabled: true

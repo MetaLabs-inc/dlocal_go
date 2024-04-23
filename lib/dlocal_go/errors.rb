@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module DlocalGo
+  # Generic error class for all errors that occur in the gem
   class Error < StandardError
     attr_reader :error_code
 
