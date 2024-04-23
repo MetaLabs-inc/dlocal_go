@@ -1,7 +1,0 @@
-module DlocalGo
-  module Responses
-    class Refund
-      RESPONSE_ATTRIBUTES: Array[Symbol]
-    end
-  end
-end

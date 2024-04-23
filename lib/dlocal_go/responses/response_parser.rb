@@ -8,17 +8,13 @@ module DlocalGo
         base.class_eval { class_attribute :response_attributes, :response_associations, :array_data_attribute }
 
         base.extend(ClassMethods)
-        base.include(Initializable)
       end
 
-      # Override the initialize method to assign the attributes and associations
-      module Initializable
-        def initialize(response, options = {})
-          extract_options(options)
+      def initialize(response, options = {})
+        extract_options(options)
 
-          assign_attributes(response)
-          assign_associations(response)
-        end
+        assign_attributes(response)
+        assign_associations(response)
       end
 
       # "Define the DSL" for all the DTOs
