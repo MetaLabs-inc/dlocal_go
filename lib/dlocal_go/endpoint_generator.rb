@@ -12,7 +12,7 @@ module DlocalGo
     end
 
     module ClassMethods
-      def generate_endpoint(method, uri:, verb:, dto_class:)
+      def endpoint(method, uri:, verb:, dto_class:)
         define_method(method) do |params = {}|
           raise DlocalGo::Error.new("Unsupported country") if params[:country].present? && supported_countries.exclude?(params[:country])
 

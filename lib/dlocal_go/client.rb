@@ -31,27 +31,27 @@ module DlocalGo
     # ===== USAGE =====
 
     # PAYMENTS
-    generate_endpoint :create_payment, uri: "/v1/payments", verb: :post, dto_class: DlocalGo::Responses::Payment
-    generate_endpoint :get_payment, uri: "/v1/payments/:payment_id", verb: :get, dto_class: DlocalGo::Responses::Payment
-    generate_endpoint :create_refund, uri: "/v1/refunds", verb: :post, dto_class: DlocalGo::Responses::Refund
-    generate_endpoint :get_refund, uri: "/v1/refunds/:refund_id", verb: :get, dto_class: DlocalGo::Responses::Refund
+    endpoint :create_payment, uri: "/v1/payments", verb: :post, dto_class: DlocalGo::Responses::Payment
+    endpoint :get_payment, uri: "/v1/payments/:payment_id", verb: :get, dto_class: DlocalGo::Responses::Payment
+    endpoint :create_refund, uri: "/v1/refunds", verb: :post, dto_class: DlocalGo::Responses::Refund
+    endpoint :get_refund, uri: "/v1/refunds/:refund_id", verb: :get, dto_class: DlocalGo::Responses::Refund
 
     # RECURRING PAYMENTS
-    generate_endpoint :create_recurring_payment, uri: "/v1/recurring-payments", verb: :post, dto_class: DlocalGo::Responses::RecurringPayment
-    generate_endpoint :get_recurring_payment, uri: "/v1/recurring-payments/:recurring_link_token", verb: :get, dto_class: DlocalGo::Responses::RecurringPayment
-    generate_endpoint :get_all_recurring_payments, uri: "/v1/recurring-payments", verb: :get, dto_class: DlocalGo::Responses::RecurringPayment
+    endpoint :create_recurring_payment, uri: "/v1/recurring-payments", verb: :post, dto_class: DlocalGo::Responses::RecurringPayment
+    endpoint :get_recurring_payment, uri: "/v1/recurring-payments/:recurring_link_token", verb: :get, dto_class: DlocalGo::Responses::RecurringPayment
+    endpoint :get_all_recurring_payments, uri: "/v1/recurring-payments", verb: :get, dto_class: DlocalGo::Responses::RecurringPayment
 
     # SUBSCRIPTIONS
-    generate_endpoint :create_subscription_plan, uri: "/v1/subscription/plan", verb: :post, dto_class: DlocalGo::Responses::SubscriptionPlan
-    generate_endpoint :update_subscription_plan, uri: "/v1/subscription/plan", verb: :patch, dto_class: DlocalGo::Responses::SubscriptionPlan
-    generate_endpoint :get_all_subscription_plans, uri: "/v1/subscription/plan/all", verb: :get, dto_class: DlocalGo::Responses::SubscriptionPlan
-    generate_endpoint :get_subscription_plan, uri: "/v1/subscription/plan/:plan_id", verb: :get, dto_class: DlocalGo::Responses::SubscriptionPlan
+    endpoint :create_subscription_plan, uri: "/v1/subscription/plan", verb: :post, dto_class: DlocalGo::Responses::SubscriptionPlan
+    endpoint :update_subscription_plan, uri: "/v1/subscription/plan", verb: :patch, dto_class: DlocalGo::Responses::SubscriptionPlan
+    endpoint :get_all_subscription_plans, uri: "/v1/subscription/plan/all", verb: :get, dto_class: DlocalGo::Responses::SubscriptionPlan
+    endpoint :get_subscription_plan, uri: "/v1/subscription/plan/:plan_id", verb: :get, dto_class: DlocalGo::Responses::SubscriptionPlan
 
-    generate_endpoint :get_subscriptions_by_plan, uri: "/v1/subscription/plan/:plan_id/subscription/all", verb: :get, dto_class: DlocalGo::Responses::Subscription
-    generate_endpoint :get_all_executions_by_subscription, uri: "/v1/subscription/plan/:plan_id/subscription/:subscription_id/execution/all", verb: :get, dto_class: DlocalGo::Responses::SubscriptionExecution
-    generate_endpoint :get_subscription_execution, uri: "/v1/subscription/:subscription_id/execution/:order_id", verb: :get, dto_class: DlocalGo::Responses::SubscriptionExecution
+    endpoint :get_subscriptions_by_plan, uri: "/v1/subscription/plan/:plan_id/subscription/all", verb: :get, dto_class: DlocalGo::Responses::Subscription
+    endpoint :get_all_executions_by_subscription, uri: "/v1/subscription/plan/:plan_id/subscription/:subscription_id/execution/all", verb: :get, dto_class: DlocalGo::Responses::SubscriptionExecution
+    endpoint :get_subscription_execution, uri: "/v1/subscription/:subscription_id/execution/:order_id", verb: :get, dto_class: DlocalGo::Responses::SubscriptionExecution
 
-    generate_endpoint :cancel_plan, uri: "/v1/subscription/plan/:plan_id/deactivate", verb: :patch, dto_class: DlocalGo::Responses::SubscriptionPlan
-    generate_endpoint :cancel_subscription, uri: "/v1/subscription/plan/:plan_id/subscription/:subscription_id/deactivate", verb: :patch, dto_class: DlocalGo::Responses::Subscription
+    endpoint :cancel_plan, uri: "/v1/subscription/plan/:plan_id/deactivate", verb: :patch, dto_class: DlocalGo::Responses::SubscriptionPlan
+    endpoint :cancel_subscription, uri: "/v1/subscription/plan/:plan_id/subscription/:subscription_id/deactivate", verb: :patch, dto_class: DlocalGo::Responses::Subscription
   end
 end
