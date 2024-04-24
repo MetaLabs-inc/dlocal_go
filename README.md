@@ -15,7 +15,7 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-1. Configure DlocalGo in a initializer
+1. Configure DlocalGo inside an initializer
 
 ```ruby
   DlocalGo.setup do |config|
@@ -37,7 +37,7 @@ If bundler is not being used to manage dependencies, install the gem by executin
   # response = client.create_payment(country: "UY", currency: "UYU", amount: 500, notification_url: "https://notification.url")
 ```
 
-- If you need to use path variables for specific endpoints you can also pass the as arguments
+- If you need to use path variables for specific endpoints you can also pass them as arguments
 
 ```ruby
   client = DlocalGo::Client.new
@@ -59,8 +59,7 @@ If bundler is not being used to manage dependencies, install the gem by executin
 3. Handle the response
 
 - We return DlocalGo::Responses objects (eg: DlocalGo::Responses::Payment) which have the same schema as the documentation responses.
-- All attributes inside responses use snake_case syntax
-
+- All attributes inside responses use the snake_case syntax
 
 - NOTE: If the request fails we raise a DlocalGo::Error with an error code and message, so you might want to rescue it. (We'll make it optional in the future, for now we always raise an error when the request fails)
 
@@ -102,7 +101,7 @@ We support all endpoints from the [DlocalGo API](https://docs.dlocalgo.com/integ
 - [x] Cancel Subscription: `client.cancel_subscription(plan_id: "the_id", subscription_id: "the_id")`
 
 
-# Endpoint request and response schema details
+# Endpoints request and response schema details
 
 - See the [DlocalGo API](https://docs.dlocalgo.com/integration-api) docs for more details on the request and response schema for each endpoint
 
