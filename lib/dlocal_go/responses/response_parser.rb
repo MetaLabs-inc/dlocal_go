@@ -8,13 +8,15 @@ module DlocalGo
         base.class_eval { class_attribute :response_attributes, :response_associations, :array_data_attribute }
 
         base.extend(ClassMethods)
-      end
 
-      def initialize(response, options = {})
-        extract_options(options)
+        base.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def initialize(response, options = {})
+            extract_options(options)
 
-        assign_attributes(response)
-        assign_associations(response)
+            assign_attributes(response)
+            assign_associations(response)
+          end
+        RUBY
       end
 
       # "Define the DSL" for all the DTOs
