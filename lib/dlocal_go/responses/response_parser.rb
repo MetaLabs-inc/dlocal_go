@@ -9,14 +9,14 @@ module DlocalGo
 
         base.extend(ClassMethods)
 
-        base.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+        base.class_eval <<-CODE, __FILE__, __LINE__ + 1
           def initialize(response, options = {})
             extract_options(options)
 
             assign_attributes(response)
             assign_associations(response)
           end
-        RUBY
+        CODE
       end
 
       # "Define the DSL" for all the DTOs
@@ -44,7 +44,9 @@ module DlocalGo
       private
 
       def extract_options(options)
-        raise ArgumentError, "array_data_attribute is required" if options[:data_class].present? && array_data_attribute.blank?
+        return unless options[:data_class].present?
+
+        raise ArgumentError, "array_data_attribute is required" if array_data_attribute.blank?
 
         class_eval { has_association(array_data_attribute, options[:data_class]) }
       end
