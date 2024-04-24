@@ -13,11 +13,6 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
     $ gem install dlocal_go
 
-## Preview
-
-https://user-images.githubusercontent.com/57004457/222937723-c95ca31c-2871-4f0f-a61e-fd4c9738e75f.mp4
-
-
 ## Usage
 
 1. Configure DlocalGo in a initializer
@@ -31,45 +26,85 @@ https://user-images.githubusercontent.com/57004457/222937723-c95ca31c-2871-4f0f-
   end
 ```
 
+2. Use the client to interact with the API
 
-2. Use the client to create a payment, get a payment, or create a refund.
-
-- Create Payment
-
-```ruby
-  params = {
-    country_code: "UY",
-    currency: "USD", # Optional, if not supplied, it uses the default currency for the country
-    amount: 100,
-    success_url: "https://success.url", # Where the user will be redirected after the payment is approved
-    back_url: "https://back.url", # Where the user is redirected if they go back from the checkout page
-    notification_url: "https://notification.url" # Optional, where the notification will be sent when payment state changes, (It will send a POST request with a payment_id param in the body, which can be used to retrieve the payment)
-  }
-  response = DlocalGo::Client.create_payment(params)
-  # If request is not successful, it will raise a DlocalGo::Error, otherwise the response will be a DlocalGo::Response::Payment object
-
-  # You might want to save the payment from the response before redirecting, so you can update the state later via a webhook (notification_url)
-  redirect_to response.redirect_url, allow_other_host: true
-```
-
-- Get Payment
+- If you need to send body parameters just pass a hash:
 
 ```ruby
-  response = DlocalGo::Client.get_payment("payment_id")
-  # If request is not successful, it will raise a DlocalGo::Error, otherwise the response will be a DlocalGo::Response::Payment object
+  client = DlocalGo::Client.new
+  response = client.create_payment({country: "UY", currency: "UYU", amount: 500, notification_url: "https://notification.url"})
+  # or
+  # response = client.create_payment(country: "UY", currency: "UYU", amount: 500, notification_url: "https://notification.url")
 ```
 
-- Create Refund
+- If you need to use path variables for specific endpoints you can also pass the as arguments
 
 ```ruby
-  params = {
-    payment_id: "payment_id_sample",
-    amount: 100,
-    reason: "reason_sample"
-  }
-  response = DlocalGo::Client.create_refund(params)
-  # If request is not successful, it will raise a DlocalGo::Error, otherwise the response will be a DlocalGo::Response::Refund object
+  client = DlocalGo::Client.new
+
+  # This will replace the payment_id path variable in the uri: /v1/payments/:payment_id
+  response = client.get_payment(payment_id: "payment_id")
 ```
+
+- If you need to send query parameters just pass as a hash under a query_params key
+
+```ruby
+  client = DlocalGo::Client.new
+  response = client.get_all_subscription_plans(query_params: {page: 2})
+  
+  # You can also use it with endpoints that require path variables. Eg:
+  response = client.get_subscriptions_by_plan(plan_id: 1234, query_params: {page: 2})
+```
+
+3. Handle the response
+
+- We return DlocalGo::Responses objects (eg: DlocalGo::Responses::Payment) which have the same schema as the documentation responses.
+- All attributes inside responses use snake_case syntax
+
+
+- NOTE: If the request fails we raise a DlocalGo::Error with an error code and message, so you might want to rescue it. (We'll make it optional in the future, for now we always raise an error when the request fails)
+
+```ruby
+  def create
+    # Example:
+    response = client.create_payment({country: "UY", currency: "UYU", amount: 500, notification_url: "https://notification.url"})
+    redirect_to response.redirect_url, allow_other_host: true
+
+  rescue DlocalGo::Error => e
+    # Do sth else
+  end
+```
+
+## Supported Endpoints
+
+We support all endpoints from the [DlocalGo API](https://docs.dlocalgo.com/integration-api)
+
+### Payments
+- [x] Create Payment: `client.create_payment(params)`
+- [x] Get Payment: `client.get_payment(payment_id: "the_id")`
+- [x] Create Refund: `client.create_refund(params)`
+- [x] Get Refund: `client.get_refund(refund_id: "the_id")`
+
+## Recurring Payments
+- [x] Create Recurring Payment: `client.create_recurring_payment(params)`
+- [x] Get Recurring Payment: `client.get_recurring_payment(recurring_link_token: "the_token")`
+- [x] Get All Recurring Payments: `client.get_all_recurring_payments`
+
+## Subscriptions
+- [x] Create Subscription Plan: `client.create_subscription_plan(params)`
+- [x] Update Subscription Plan: `client.update_subscription_plan(plan_id: "the_id", params)`
+- [x] Get All Subscription Plans: `client.get_all_subscription_plans`
+- [x] Get Subscription Plan: `client.get_subscription_plan(plan_id: "the_id")`
+- [x] Get Subscriptions by Plan: `client.get_subscriptions_by_plan(plan_id: "the_id")`
+- [x] Get All Executions by Subscription: `client.get_all_executions_by_subscription(plan_id: "the_id", subscription_id: "the_id")`
+- [x] Get Subscription Execution: `client.get_subscription_execution(subscription_id: "the_id", order_id: "the_id")`
+- [x] Cancel Plan: `client.cancel_plan(plan_id: "the_id")`
+- [x] Cancel Subscription: `client.cancel_subscription(plan_id: "the_id", subscription_id: "the_id")`
+
+
+# Endpoint request and response schema details
+
+- See the [DlocalGo API](https://docs.dlocalgo.com/integration-api) docs for more details on the request and response schema for each endpoint
 
 ## Contributing
 
